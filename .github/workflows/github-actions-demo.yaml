@@ -8,25 +8,21 @@ jobs:
     steps:
       - name: Checkout
       - uses: actions/checkout@v4
-#
       - name: create npmrc and env file
         run: |
           echo "${{ secrets.NPMRC_FOR_TEST }}" > .npmrc
           echo "${{ secrets.ENV_FILE_FOR_TEST }}" > .env
-
       - name: Login to Docker Hub
         uses: docker/login-action@v3 
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-
       - name: Build and push
         uses: docker/build-push-action@v5 
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/huashuiai-web-test-docker:latest
-
       - name: create ssh key
         run: |
           mkdir -p ~/.ssh/
